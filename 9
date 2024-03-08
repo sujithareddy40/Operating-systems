@@ -1,0 +1,16 @@
+#include <stdio.h>
+void fcfs(int processes[], int n, int burst_time[]) {
+int waiting_time = 0;
+printf("Process\tWaiting Time\n");
+for (int i = 0; i < n; i++) {
+waiting_time += burst_time[i];
+printf("%d\t%d\n", processes[i], waiting_time);
+}
+}
+int main() {
+int n = 5;
+int processes[] = {1, 2, 3, 4, 5};
+int burst_time[] = {10, 5, 8, 12, 7};
+fcfs(processes, n, burst_time);
+return 0;
+}
