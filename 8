@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <pthread.h>
+
+pthread_mutex_t forks[5];
+
+void *philosopher(void *arg) {
+int id = *((int *)arg);
+int left_fork = id;
+int right_fork = (id + 1) % 5;
+
+pthread_mutex_lock(&forks[left_fork]);
+pthread_mutex_lock(&forks[right_fork]);
+
+printf("Philosopher %d is eating\n", id);
+
+pthread_mutex_unlock(&forks[left_fork]);
+pthread_mutex_unlock(&forks[right_fork]);
+
+return NULL;
+
+}
+
+int main() {
+pthread_t philosophers[5];
+int ids[5] = {0, 1, 2, 3, 4};
+
+for (int i = 0; i < 5; ++i) {
+pthread_mutex_init(&forks[i], NULL);
+pthread_create(&philosophers[i], NULL, philosopher, &ids[i]);
+}
+
+for (int i = 0; i < 5; ++i) {
+pthread_join(philosophers[i], NULL);
+pthread_mutex_destroy(&forks[i]);
+}
+
+return 0;
+
+}
